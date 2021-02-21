@@ -1,0 +1,32 @@
+<xsd:schema
+        xmlns="http://study.java1.week05/schema"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://study.java1.week05/schema">
+
+    <xsd:element name="student">
+        <xsd:complexType>
+            <xsd:attribute name="name" type="xsd:string">
+            </xsd:attribute>
+            <xsd:attribute name="id" type="xsd:int">
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="klass">
+        <xsd:complexType>
+            <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element ref="student"/>
+            </xsd:choice>
+            <xsd:attribute name="id" type="xsd:string"></xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="school">
+        <xsd:complexType>
+            <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element ref="klass"/>
+            </xsd:choice>
+            <xsd:attribute name="id" type="xsd:string"></xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>
