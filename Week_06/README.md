@@ -5,7 +5,7 @@
 
 * 建表sql文件：[wemall-schema.sql](wemall-schema.sql)
 
-* 实体关系图：
+* 实体关系图：[wemall-ER.jpg](wemall-ER.jpg)
 
 ![wemall-ER.jpg](wemall-ER.jpg)
 
