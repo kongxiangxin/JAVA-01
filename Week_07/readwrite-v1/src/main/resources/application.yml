@@ -1,0 +1,17 @@
+study.java1.week07.readwrite.v1.datasource:
+  master:
+    driver-class-name: com.mysql.jdbc.Driver
+    jdbc-url: jdbc:mysql://localhost:3306/wemall?useSSL=false
+    username: root
+    password: 1234
+  slaves:
+    slave1:
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3307/wemall?useSSL=false
+      username: root
+      password: 1234
+    slave2:
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3308/wemall?useSSL=false
+      username: root
+      password: 1234

@@ -1,0 +1,27 @@
+spring.shardingsphere:
+  datasource:
+    names: master,slave1,slave2
+    master:
+      type: com.zaxxer.hikari.HikariDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/wemall?useSSL=false
+      username: root
+      password: 1234
+    slave1:
+      type: com.zaxxer.hikari.HikariDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3307/wemall?useSSL=false
+      username: root
+      password: 1234
+    slave2:
+      type: com.zaxxer.hikari.HikariDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3308/wemall?useSSL=false
+      username: root
+      password: 1234
+  sharding:
+    master-slave-rules: #主从规则
+      wemall: #数据库名称或者别名
+        master-data-source-name: master
+        slave-data-source-names: slave1,slave2
+        load-balance-algorithm-type: random
