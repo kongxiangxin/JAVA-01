@@ -1,0 +1,27 @@
+spring.shardingsphere:
+  datasource:
+    names: wemall1,wemall2
+    wemall1:
+      type: com.zaxxer.hikari.HikariDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/wemall_1?useSSL=false
+      username: root
+      password: 1234
+    wemall2:
+      type: com.zaxxer.hikari.HikariDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/wemall_2?useSSL=false
+      username: root
+      password: 1234
+  sharding:
+    tables:
+      om_order:
+        actual-data-nodes: wemall$->{1..2}.om_order_$->{0..15}
+        database-strategy:
+          inline:
+            sharding-column: seller_id
+            algorithm-expression: wemall$->{seller_id % 2 + 1}
+        tableStrategy:
+          inline:
+            shardingColumn: order_sn
+            algorithmExpression: om_order_$->{Math.abs(order_sn.hashCode()) % 16}
