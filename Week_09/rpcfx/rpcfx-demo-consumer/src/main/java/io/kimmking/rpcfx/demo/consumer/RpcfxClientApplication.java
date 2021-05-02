@@ -4,18 +4,24 @@ import io.kimmking.rpcfx.api.Filter;
 import io.kimmking.rpcfx.api.LoadBalancer;
 import io.kimmking.rpcfx.api.Router;
 import io.kimmking.rpcfx.api.RpcfxRequest;
-import io.kimmking.rpcfx.client.Rpcfx;
-import io.kimmking.rpcfx.demo.api.Order;
-import io.kimmking.rpcfx.demo.api.OrderService;
+import io.kimmking.rpcfx.client.ServiceRef;
 import io.kimmking.rpcfx.demo.api.User;
 import io.kimmking.rpcfx.demo.api.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.aop.support.AopUtils;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.util.ClassUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Random;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "io.kimmking.rpcfx")
+@EnableAspectJAutoProxy(exposeProxy = true)
+@RestController
 public class RpcfxClientApplication {
 
 	// 二方库
@@ -28,19 +34,31 @@ public class RpcfxClientApplication {
 		// UserService service = new xxx();
 		// service.findById
 
-		UserService userService = Rpcfx.create(UserService.class, "http://localhost:8080/");
-		User user = userService.findById(1);
-		System.out.println("find user id=1 from server: " + user.getName());
+//		UserService userService = Rpcfx.create(UserService.class, "http://localhost:8080/");
+//		User user = userService.findById(1);
+//		System.out.println("find user id=1 from server: " + user.getName());
+//
+//		OrderService orderService = Rpcfx.create(OrderService.class, "http://localhost:8080/");
+//		Order order = orderService.findOrderById(1992129);
+//		System.out.println(String.format("find order name=%s, amount=%f",order.getName(),order.getAmount()));
+//
+//		//
+//		UserService userService2 = Rpcfx.createFromRegistry(UserService.class, "localhost:2181", new TagRouter(), new RandomLoadBalancer(), new CuicuiFilter());
 
-		OrderService orderService = Rpcfx.create(OrderService.class, "http://localhost:8080/");
-		Order order = orderService.findOrderById(1992129);
-		System.out.println(String.format("find order name=%s, amount=%f",order.getName(),order.getAmount()));
+		SpringApplication.run(RpcfxClientApplication.class, args);
 
-		//
-		UserService userService2 = Rpcfx.createFromRegistry(UserService.class, "localhost:2181", new TagRouter(), new RandomLoadBalancer(), new CuicuiFilter());
-
-//		SpringApplication.run(RpcfxClientApplication.class, args);
 	}
+
+//	@ServiceRef(url = "http://localhost:8080")
+//	private UserService userService;
+//
+//	@GetMapping("/user/{id}")
+//	public User findById(@PathVariable("id") Integer id) {
+//		boolean cglibProxy1 = ClassUtils.isCglibProxy(this);
+//		boolean cglibProxy = AopUtils.isCglibProxy(this);
+//		Class<?> targetClass = AopUtils.getTargetClass(this);
+//		return userService.findById(id);
+//	}
 
 	private static class TagRouter implements Router {
 		@Override

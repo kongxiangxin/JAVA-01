@@ -1,0 +1,47 @@
+server.port: 7788
+
+# Spring boot application
+spring.application.name: hmily-demo-currency-service
+# Base packages to scan Dubbo Component: @org.apache.dubbo.config.annotation.Service
+dubbo.scan.base-packages: study.java1.week09.hmily.currency.service.impl
+
+# Dubbo Protocol
+dubbo.protocol.name: dubbo
+## Random port
+dubbo.protocol.port: -1
+
+## Dubbo Registry
+dubbo.registry.address: zookeeper://127.0.0.1:2181
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+spring.shardingsphere:
+  datasource:
+    names: currency-0,currency-1
+    currency-0:
+      type: com.zaxxer.hikari.HikariDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/currency_deal_0?useSSL=false
+      username: root
+      password: 1234
+    currency-1:
+      type: com.zaxxer.hikari.HikariDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/currency_deal_1?useSSL=false
+      username: root
+      password: 1234
+  sharding:
+    tables:
+      account:
+        actual-data-nodes: currency-$->{0..1}.account
+        database-strategy:
+          inline:
+            sharding-column: user_id
+            algorithm-expression: currency-$->{user_id % 2}
+      account_trade:
+        actual-data-nodes: currency-$->{0..1}.account_trade
+        database-strategy:
+          inline:
+            sharding-column: user_id
+            algorithm-expression: currency-$->{user_id % 2}
